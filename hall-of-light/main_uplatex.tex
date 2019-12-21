@@ -1,0 +1,167 @@
+%!TEX program = uplatex + dvipdfmx
+%!TEX encoding = UTF-8
+
+\documentclass{utbook}
+
+%% \usepackage{wallpaper}
+%% \ThisULCornerWallPaper{1}{竹.jpg}
+
+%% \usepackage{geometry}
+%% \newgeometry{
+%%   top=50pt, bottom=50pt, left=46pt, right=46pt,
+%%   headsep=25pt,
+%% }
+%% \savegeometry{mdGeo}
+%% \loadgeometry{mdGeo}
+
+%% fontset=windows
+%% 正文  =songti=宋体
+%% textit=kaishu=楷体
+%% textbf=heiti=黑体
+%% textsf=yahei=微软雅黑
+%% texttt=仿宋
+%% textbf+textsf=微软雅黑粗体
+%% lishu=隶书
+%% youyuan=幼圆
+\usepackage[fontset=windows]{ctex}
+\ctexset{
+  today = big,
+  %% punct = quanjiao, %% banjiao,
+  autoindent = 0pt,
+  %% section = {
+  %%   numbering = false, % 标题不显示编号
+  %%   titleformat = \Huge,
+  %%   format = \texttt
+  %% },
+  %% chapter = {
+  %%   numbering = true, % 标题不显示编号
+  %%   titleformat = \centering\Huge, % 小四号字
+  %%   format = \textbf % 楷体
+  %% }
+}
+
+\newcommand{\yt}{\yahei}
+\newcommand{\ytz}{\yahei}
+\newcommand{\ytza}{\yahei}
+\newcommand{\ytzn}{\yahei}
+
+\usepackage{titlesec,lipsum}
+
+\titleformat{\chapter}[display]{\normalfont\huge\bfseries}{}{0pt}{\Huge\yahei}
+\titleformat{\section}[display]{\normalfont\huge\bfseries}{}{0pt}{\huge\lishu}
+
+
+\title{\zihao{0}\textbf{黃帝內經}}
+
+\author{\normalsize 由 \textit{喝普洱茶的麥兜} 进行編輯整理及异体字注音}
+\date{\normalsize\today 版}
+
+\begin{document}
+\maketitle
+
+\LARGE
+\tableofcontents
+
+\part{黃帝內經·素問}
+\LARGE
+\include{halloflight1to10nopunct}
+\part{黃帝內經·靈樞}
+\include{spiritualpivot10}
+
+\section{异体字注音}
+
+焫：ruo4
+
+鑱：chan2
+
+熇：he4
+
+虙：fu2
+
+皏：peng3
+
+炲：tai2
+
+脽：shui2
+
+齗：yin2
+
+\ytz{鬄}：ti4
+
+稸：xu4
+
+黅：jin1
+
+憹：nao2
+
+爇：ruo4
+
+吤：jie4
+
+\ytz{蛕}：hui2，蛔
+
+腄：chui2
+
+晬：zui4
+
+\ytz{肬}：you2
+
+\ytz{髃}：yu2
+
+覩：du3，睹
+
+\ytz{昬}：hun1，昏
+
+\ytz{顀}：chui2，椎
+
+頄：qiu2，颧骨
+
+\ytz{䐜}（月真）：chen1，胸膈或上腹部脹滿不適
+
+\yt{𩅞}（雩重）：zhong1，氣之往來不息
+
+㾓（疒肙）：juan1
+
+㑊（亻亦）：yi4
+
+\ytz{䐃}（月囷）：jun4，肌肉的突起部位
+
+\ytz{㶼}（火矣）：ai1
+
+\ytz{䀮}（目巟）：huang1，目昏暗，視物不清
+
+\ytz{䯒}（骨行）：heng2，脛腓骨的統稱，小腿部，腳脛部
+
+\ytza{𤼃}（疒龍）：
+
+\ytz{䏚}（月少）：miao3，季脅下挾脊兩旁空軟處
+
+\ytz{㶼}（火矣）：ai1，火燒，火熨、灸焫等治法
+
+\ytza{𩩻}（骨盾）：tu2：皮肉肥厚之處
+
+\ytza{𦛗}（月呂）：lv2
+
+雲（蕓去草頭令）
+
+\ytza{𤸷}（疒帬）：wan2，痹，麻木
+
+\ytz{䪼}（出頁）：zhuo1，眼眶下面的骨
+
+痠（疒峻-山）：suan1，同“酸”
+
+\ytz{㿉}（疒貴）：tui2
+
+\ytz{㒤}（亻聶）：che4，懾
+
+\ytz{㕮}（口父）：fu3，用嘴咀嚼
+
+\ytz{㰦}（去欠）：qu4，呿，张口
+
+\ytza{𩩲}（骨曷）：he2，肩骨
+
+\ytza{𩨗}（骨亏）
+
+\ytz{㽷}（疒水）：shui4
+
+\end{document}

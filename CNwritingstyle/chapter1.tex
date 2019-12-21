@@ -1,0 +1,96 @@
+\chapter{中文直書}
+使用方式
+\begin{itemize}
+\item 主檔名為{\tt test.tex}。其檔案結構如第三章所示，基本上是根據\LaTeX{}的檔案結構，指令亦是\LaTeX{}指令。
+{\tt \textbackslash chapter}\{章名\}，
+{\tt \textbackslash section}\{節名\}，
+{\tt \textbackslash subsection}\{小節名\}。
+\item
+預設是中文直向直書，但書面旋轉九十度。故完稿時要反轉九十度。編排時是水平排列以便閱讀，完稿時請除去{\tt CJKhorz}指令，然後編譯數次後，再用{\tt PDF}旋轉功能，轉成垂直排列。
+\item
+編排時會產生文字框，完稿時請在最上一行加入{\tt [noframe]}以消除文字框。
+\end{itemize}
+\begin{table}
+\caption{中文圖表}
+\rotatebox[origin=cc]{90}{
+\begin{tabular}{ccc}\\ \hline
+{\CJKhorz 實驗} & {\CJKhorz方法一} & {\CJKhorz方法二} \\
+1      &   123 & 456 \\
+2      &  abc  & def \\ \hline
+\end{tabular}
+}
+\end{table}
+如{\tt section 1.1， subsection 1.1.2}。本書將以幾之幾表達。例如第一章第一節不以第{\tt 1.1}節表示，而以第一之一節表示。\cite{test}\cite{test2}
+\section{唐詩}
+第一章將以詩詞測試。
+\subsection{樂遊原　唐　李商隱}
+
+向晚意不適　驅車登古原夕陽無限好　只是近黃昏
+\subsection{無題　唐　李商隱}
+
+相見時難別亦難　東風無力百花殘春蠶到死絲方盡　蠟炬成灰淚始乾
+
+曉鏡但愁雲鬢改　夜吟應覺月光寒蓬萊此去無多路　青鳥殷勤為探看
+\subsection{獨坐敬亭山　唐　李白}
+
+眾鳥高飛盡  孤雲獨去閒  相看兩不厭　只有敬亭山
+\section{勵志} \index{勵志}
+第二節則以詩詞勵志。
+\subsection{無題}
+
+鳥入青雲倦亦飛\\
+\fbox{\small
+\begin{tabular}{l}
+小鳥飛入高空，疲倦了還是要飛，不可休息。青雲指青雲之志，鳥當指麻雀等小鳥而非鷹騭。\\
+故該句引伸為即使一般人達到目標後，仍應當繼續努力，不可休息。
+\end{tabular}
+}\\
+這裡的翻譯是採立即出現在本文左邊。有些文言文書是一段一段地翻譯。
+
+\subsection{卜算子 詠梅}
+
+陸游\\
+驛外斷橋邊 寂寞開無主 已是黃昏獨自愁 更著風和雨\\
+無意苦爭春 一任群芳妒 零落成泥碾作塵 只有香如故\\
+\fbox{\small
+\begin{minipage}{0.49\textwidth}
+\begin{enumerate}
+\item[\rotatebox{90}{(1)}] 驛外，斷橋邊 指所居非地。
+\item[\rotatebox{90}{(2)}] 黃昏，風和雨 指所遇非時。
+\end{enumerate}
+\end{minipage}
+\vrule
+\begin{minipage}{0.49\textwidth}
+\begin{enumerate}
+\item[\rotatebox{90}{(3)}] 苦爭春 苦苦地與他人爭鋒。
+\item[\rotatebox{90}{(4)}] 碾作塵 碾成泥土，依然綻放著清香。
+\end{enumerate}
+\end{minipage}
+}
+這裡分成上下兩欄的註釋欄，其實可依第二章的技巧寫成含變數的{\tt newtheorem}；如果更多則可寫入{\tt cnwritingCJK}成{\tt Class}檔。同樣地有些書的註解是放在本文後。本書只是想說明中文書籍亦可用\LaTeX{}做出，甚至更具特色。不一定要用{\tt Office Words}。
+
+\subsection{中文古籍}
+
+此節將比擬於中文古籍，不分節、小節，有如章回小說。
+
+\section{將進酒}
+\begin{figure}
+\includegraphics[angle=90]{NCU_logo.jpg}
+\caption{中文圖表}
+\end{figure}
+
+唐　李白\\
+君不見　黃河之水天上來　奔流到海不復回\\
+君不見　高堂明鏡悲白髮　朝如青絲暮成雪\\
+人生得意須盡歡　莫使金樽空對月\\
+天生我材必有用　千金散盡還復來\\
+烹羊宰牛且為樂　會須一飲三百杯\\
+岑夫子　丹丘生\\
+將進酒  杯莫停\\
+與君歌一曲　請君為我側耳聽\\
+鐘鼓饌玉不足貴　但願長醉不願醒\\
+古來聖賢皆寂寞　惟有飲者留其名\\
+陳王昔時宴平樂　斗酒十千恣讙謔\\
+主人何為言少錢　徑須沽取對君酌\\
+五花馬　千金裘\\
+呼兒將出換美酒　與爾同消萬古愁

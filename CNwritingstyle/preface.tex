@@ -1,0 +1,39 @@
+\begin{preface}
+\index{序} \index{cnwritingCJK 環境!preface}
+
+
+本範例僅假設使用者有基礎的\LaTeX 知識。知道如何安裝{\color {red}免費軟體\LaTeX}，不然需要找朋友幫你安裝。或到中央大學教務處網址下載中央大學碩博士論文\LaTeX 範例。
+
+中文直書一直未突破，主要是東西方人士書寫方式的不同，西方的書寫方式多是橫向書寫，由左至右。所以由\LaTeX 排版中文直書，由上至下，由右至左有些困難。首先，將紙張橫向放置(選用{\tt landscape})，然後輸入資料，因其輸出是橫向，故必須旋轉90度(這可由{\tt PDF READER}改變)。另外\LaTeX{}內部設定長寬的定義不變，故技巧上須讓\LaTeX{}內部之長寬互換，以便橫向輸入不受內定的寬度限制。最重要的是頁碼安排，這是藉由tikz巨集的絕對座標來達成。這些設定都已在{\tt cnwritingCJK.cls}內安排完成，使用者({\tt user})不須學習或擔心。目前設定只允許更改標楷體字型大小及間距(\verb|fontsize{大小}{間距}\selectfont|)。
+此體裁檔({\tt cnwritingCJK})的目的在提供中文直書的排版。若想改變排版外觀，則需有相當知識更改此體裁檔，故本體裁檔可再增修，複製，直接採用做個人用途，或供單位使用，唯不可做商業用途。此套件係自助編寫屬非賣品，但可自由使用，期望提供學生/作者便利性，以\LaTeX 做出符合中文直書格式的文稿，但不隱含任何商業價值。
+
+\clearpage
+
+{\color{red}已知問題}
+
+\begin{itemize}
+\item 主目錄{\tt (titletoc)}和圖表目錄{\tt (LoF，LoT)}之頁碼未成一直線。
+\end{itemize}
+
+
+歷史更新
+\begin{itemize}
+\item 2013/01/05：索引頁碼符合中文閱讀。
+\item 2013/01/01：本檔案適用於 {\tt Windows}，{\tt MiKTeX}引擎。
+\begin{itemize}
+\item 引述文獻格式符合中文閱讀。但需一篇一篇用\verb|\cite{tag}|引述。
+\item 封面有頁碼，雖曾設\verb|\thispagestyle{empty}|，不成功。但用\verb|\pagenumbering{gobble}|解決了。
+\item 頁面下方之頁碼，可由\verb|\pagestyle{empty}|除去。
+\item 再加選項{\tt draft}，會於書本左側，印出日期，未完稿，作者等資訊。圖檔則以方框表示。
+\end{itemize}
+\item 2012/06/30：{\tt cnwritingCJK.cls} 完成。
+\begin{itemize}
+\item 額外選項可有{\tt frame}，{\tt noframe}，標準選項同\LaTeX。
+\item 加入檔案結構之解釋。
+\item 中文化章節，目錄，表目錄，圖目錄，皆已完成。
+\item 中文書封面製作，變化很多，建議用其他方法製作\cite{interm}，轉成{\tt PDF}檔後，再用插頁方式加入。
+\item 作者製作的中央大學碩博士論文體裁檔(中文橫書)，有\LaTeX{}初步介紹，可參考。
+\item 完稿最後要以{\tt PDF Reader}旋轉90度。
+\end{itemize}
+\end{itemize}
+\end{preface}

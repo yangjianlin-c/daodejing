@@ -1,0 +1,41 @@
+%
+% upTeX map file for Founder fonts.
+%
+% urml        UniGB-UTF16-H   fzssk.ttf 方正书宋_GBK
+% urmlv       UniGB-UTF16-V   fzssk.ttf 方正书宋_GBK
+% ugbm        UniGB-UTF16-H   fzxbsk.ttf 方正小标宋_GBK
+% ugbmv       UniGB-UTF16-V   fzxbsk.ttf 方正小标宋_GBK
+
+% uprml-h     UniGB-UTF16-H   fzssk.ttf 方正书宋_GBK
+% uprml-v     UniGB-UTF16-V   fzssk.ttf 方正书宋_GBK
+% upgbm-h     UniGB-UTF16-H   fzxbsk.ttf 方正小标宋_GBK
+% upgbm-v     UniGB-UTF16-V   fzxbsk.ttf 方正小标宋_GBK
+% uprml-hq    UniGB-UCS2-H    fzssk.ttf 方正书宋_GBK
+% upgbm-hq    UniGB-UCS2-V    fzxbsk.ttf 方正小标宋_GBK
+
+% %% 下面指定的字体是方正书版中的
+% %% 格式： jfm名字 编码 字体名
+% %% 简体中文的编码是UniGB-UTF16-H以及UniGB-UTF16-V
+% %% 其他详情请仔细查看cid-x.map文件 
+% upfzss-h    UniGB-UTF16-H        FZSSK.TTF
+% upfzss-v    UniGB-UTF16-V        FZSSK.TTF
+% upfzxbs-h    UniGB-UTF16-H        FZXBSK.TTF
+% upfzxbs-v    UniGB-UTF16-V        FZXBSK.TTF
+% upfzfs-h    UniGB-UTF16-H        FZFSK.TTF
+% upfzfs-v    UniGB-UTF16-V        FZFSK.TTF
+% upfzk-h        UniGB-UTF16-H        FZKTK.TTF 方正楷体_GBK
+% upfzk-v        UniGB-UTF16-V        FZKTK.TTF
+% upfzh-h        UniGB-UTF16-H        FZHTK.TTF 方正黑体_GBK
+% upfzh-v        UniGB-UTF16-V        FZHTK.TTF
+
+urml        UniGB-UTF16-H   AdobeSongStd-Light.otf
+urmlv       UniGB-UTF16-V   AdobeSongStd-Light.otf
+ugbm        UniGB-UTF16-H   AdobeHeitiStd-Regular.otf
+ugbmv       UniGB-UTF16-V   AdobeHeitiStd-Regular.otf
+
+uprml-h     UniGB-UTF16-H   AdobeSongStd-Light.otf
+uprml-v     UniGB-UTF16-V   AdobeSongStd-Light.otf
+upgbm-h     UniGB-UTF16-H   AdobeHeitiStd-Regular.otf
+upgbm-v     UniGB-UTF16-V   AdobeHeitiStd-Regular.otf
+uprml-hq    UniGB-UCS2-H    AdobeSongStd-Light.otf
+upgbm-hq    UniGB-UCS2-V    AdobeHeitiStd-Regular.otf

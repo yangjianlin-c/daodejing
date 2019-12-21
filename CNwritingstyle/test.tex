@@ -1,0 +1,24 @@
+\documentclass[noframe,draft]{cnwritingCJK}
+\usepackage{makeidx,fancyvrb,verbatim,pdfpages} % 於宣告區
+\pagestyle{empty}                  % 完稿時用
+\makeindex  
+
+\begin{document}
+\titlepage{如何以\rotatebox[origin=cc]{90}{\LaTeX}\,中文直書}{羅吉昌}
+\author{羅吉昌}  
+
+\fontsize{14pt}{20pt}\selectfont   %更改{字型}{大小}及間距  
+\begin{CJK}{UTF8}{bkai}
+%\CJKhorz                          %撰寫時方便閱讀
+\pagenumbering{roman}
+\include{preface}
+\include{acknowledge}
+\include{toctoftot}                % ToC ToF ToT
+\clearpage
+\pagenumbering{arabic}
+\include{chapter1}
+\include{chapter2}   
+\include{chapter3}
+\include{idxbib}                   % Index & Bibitem
+\end{CJK}
+\end{document}

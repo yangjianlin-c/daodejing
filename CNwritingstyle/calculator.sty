@@ -1,0 +1,1212 @@
+%%
+%% This is file `calculator.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% calculator.dtx  (with options: `calculator')
+%% ------------------------------------------------------------------
+%% The calculator and calculus packages
+%% Copyright (C) 2012 by Robert Fuster <rfuster@mat.upv.es>
+%% All rights reserved
+%% 
+%% This file may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in:
+%% 
+%%     http://www.latex-project.org/lppl.txt
+%% 
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%% ------------------------------------------------------------------
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+
+
+
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{calculator}[2012/06/10 v.1.0a]
+\newdimen\cctr@lengtha
+\newdimen\cctr@lengthb
+\newdimen\cctr@epsilon
+\cctr@epsilon=1sp
+\def\cctr@logmaxnum{9.704}
+\def\cctr@Warndivzero#1#2{%
+      \PackageWarning{calculator}%
+        {Division by 0.\MessageBreak
+         I can't define #1/#2}}
+
+\def\cctr@Warnnogcd{%
+      \PackageWarning{calculator}%
+        {gcd(0,0) is not well defined}}
+
+\def\cctr@Warnnoposrad#1{%
+      \PackageWarning{calculator}%
+                    {The argument in square root\MessageBreak
+                     must be non negative\MessageBreak
+                     I can't define sqrt(#1)}}
+
+\def\cctr@Warnnointexp#1#2{%
+      \PackageWarning{calculator}%
+                    {The exponent in power function\MessageBreak
+                     must be an integer\MessageBreak
+                     I can't define #1^#2}}
+
+\def\cctr@Warnsingmatrix#1#2#3#4{%
+      \PackageWarning{calculator}%
+        {Matrix (#1 #2 ; #3 #4) is singular\MessageBreak
+         Its inverse is not defined}}
+
+\def\cctr@WarnsingTDmatrix#1#2#3#4#5#6#7#8#9{%
+      \PackageWarning{calculator}%
+        {Matrix (#1 #2 #3; #4 #5 #6; #7 #8 #9) is singular\MessageBreak
+         Its inverse is not defined}}
+
+\def\cctr@WarnIncLinSys{\PackageWarning{xpicture}{%
+      Incompatible linear system}}
+
+\def\cctr@WarnIncTDLinSys{\PackageWarning{xpicture}{%
+      Incompatible or indeterminate linear system\MessageBreak
+      For 3x3 systems I can solve only determinate systems}}
+
+\def\cctr@WarnIndLinSys{\PackageWarning{xpicture}{%
+      Indeterminate linear system.\MessageBreak
+      I will choose one of the infinite solutions}}
+
+\def\cctr@WarnZeroLinSys{\PackageWarning{xpicture}{%
+      0x=0 linear system. Every vector is a solution!\MessageBreak
+      I will choose the (0,0) solution}}
+
+\def\cctr@Warninftan#1{%
+             \PackageWarning{calculator}{%
+                    Undefined tangent.\MessageBreak
+                           The cosine of #1 is zero and, then,\MessageBreak
+                           the tangent of #1 is not defined}}
+
+\def\cctr@Warninfcotan#1{%
+             \PackageWarning{calculator}{%
+                    Undefined cotangent.\MessageBreak
+                           The sine of #1 is zero and, then,\MessageBreak
+                           the cotangent of #1 is not defined}}
+
+\def\cctr@Warninfexp#1{%
+             \PackageWarning{calculator}{%
+                    The absolute value of the variable\MessageBreak
+                    in the exponential function must be less than
+                    \cctr@logmaxnum\MessageBreak
+                   (the logarithm of the max number I know)\MessageBreak
+                    I can't define exp(#1)}}
+
+\def\cctr@Warninfexpb#1#2{%
+             \PackageWarning{calculator}{%
+                    The base\MessageBreak
+                    in the exponential function must be positive.
+                    \MessageBreak
+                    I can't define #1^(#2)}}
+
+\def\cctr@Warninflog#1{%
+             \PackageWarning{calculator}{%
+                    The value of the variable\MessageBreak
+                    in the logarithm function must be positive\MessageBreak
+                    I can't define log(#1)}}
+\def\COPY#1#2{\edef#2{#1}\ignorespaces}
+\def\GLOBALCOPY#1#2{\xdef#2{#1}\ignorespaces}
+\def\@OUTPUTSOL#1{\GLOBALCOPY{#1}{\cctr@outa}\endgroup\COPY{\cctr@outa}{#1}}
+\def\@OUTPUTSOLS#1#2{\GLOBALCOPY{#1}{\cctr@outa}
+                     \GLOBALCOPY{#2}{\cctr@outb}\endgroup
+                     \COPY{\cctr@outa}{#1}\COPY{\cctr@outb}{#2}}
+\def\MAX#1#2#3{%
+   \ifdim #1\p@ < #2\p@
+      \COPY{#2}{#3}\else\COPY{#1}{#3}\fi\ignorespaces}
+\def\MIN#1#2#3{%
+   \ifdim #1\p@ > #2\p@
+      \COPY{#2}{#3}\else\COPY{#1}{#3}\fi\ignorespaces}
+\def\ABSVALUE#1#2{%
+    \ifdim #1\p@<\z@
+          \MULTIPLY{-1}{#1}{#2}\else\COPY{#1}{#2}\fi}
+\def\MULTIPLY#1#2#3{\cctr@lengtha=#1\p@
+       \cctr@lengtha=#2\cctr@lengtha
+       \edef#3{\expandafter\strip@pt\cctr@lengtha}\ignorespaces}
+\def\ADD#1#2#3{\cctr@lengtha=#1\p@
+       \cctr@lengthb=#2\p@
+       \advance\cctr@lengtha by \cctr@lengthb
+       \edef#3{\expandafter\strip@pt\cctr@lengtha}\ignorespaces}
+\def\SUBTRACT#1#2#3{\ADD{#1}{-#2}{#3}}
+\def\DIVIDE#1#2#3{%
+     \begingroup
+       \ABSVALUE{#1}{\cctr@tempD}
+       \ABSVALUE{#2}{\cctr@tempd}
+       \ifdim#1\p@<\z@\ifdim#2\p@>\z@\COPY{-1}{\cctr@sign}
+          \else\COPY{1}{\cctr@sign}\fi
+       \else\ifdim#2\p@>\z@\COPY{1}{\cctr@sign}
+               \else\COPY{-1}{\cctr@sign}\fi
+            \fi
+       \@DIVIDE{\cctr@tempD}{\cctr@tempd}{\cctr@tempq}{\cctr@tempr}
+       \COPY{\cctr@tempq.}{\cctr@Q}
+       \COPY{0}{\cctr@ndec}
+       \@whilenum \cctr@ndec<5 \do{%
+           \ifdim\cctr@tempr\p@<1638\p@
+              \MULTIPLY{\cctr@tempr}{10}{\cctr@tempD}
+           \else
+              \COPY{\cctr@tempr}{\cctr@tempD}
+              \MULTIPLY{\cctr@tempd}{0.1}{\cctr@tempd}
+           \fi
+           \@DIVIDE{\cctr@tempD}{\cctr@tempd}{\cctr@tempq}{\cctr@tempr}
+           \COPY{\cctr@Q\cctr@tempq}{\cctr@Q}
+           \ADD{1}{\cctr@ndec}{\cctr@ndec}}%
+       \MULTIPLY{\cctr@sign}{\cctr@Q}{#3}
+       \@OUTPUTSOL{#3}}
+  \def\@DIVIDE#1#2#3#4{%
+       \@INTEGERDIVIDE{#1}{#2}{#3}
+       \MULTIPLY{#2}{#3}{#4}
+       \SUBTRACT{#1}{#4}{#4}}
+\def\@INTEGERDIVIDE#1#2#3{%
+       \cctr@lengtha=#1\p@
+       \cctr@lengthb=#2\p@
+       \ifdim\cctr@lengthb=\z@
+          \let#3\undefined
+          \cctr@Warndivzero#1#2%
+       \else
+          \divide\cctr@lengtha\cctr@lengthb
+          \COPY{\number\cctr@lengtha}{#3}
+       \fi\ignorespaces}
+\def\LENGTHDIVIDE#1#2#3{%
+       \begingroup
+       \cctr@lengtha=#1
+       \cctr@lengthb=#2
+       \edef\cctr@tempa{\expandafter\strip@pt\cctr@lengtha}%
+       \edef\cctr@tempb{\expandafter\strip@pt\cctr@lengthb}%
+       \DIVIDE{\cctr@tempa}{\cctr@tempb}{#3}
+       \@OUTPUTSOL{#3}}
+\def\SQUARE#1#2{\MULTIPLY{#1}{#1}{#2}}
+\def\CUBE#1#2{\MULTIPLY{#1}{#1}{#2}\MULTIPLY{#2}{#1}{#2}}
+\def\POWER#1#2#3{%
+       \begingroup
+       \INTEGERPART{#2}{\cctr@tempexp}
+       \ifdim \cctr@tempexp\p@<#2\p@
+         \cctr@Warnnointexp{#1}{#2}
+         \let#3\undefined
+       \else
+          \@POWER{#1}{#2}{#3}\fi\@OUTPUTSOL{#3}}
+\def\@POWER#1#2#3{%
+      \begingroup
+      \ifdim #2\p@<\z@
+             \DIVIDE{1}{#1}{\cctr@tempb}
+             \MULTIPLY{-1}{#2}{\cctr@tempc}
+             \@POWER{\cctr@tempb}{\cctr@tempc}{#3}
+          \else
+             \COPY{0}{\cctr@tempa}
+             \COPY{1}{#3}
+             \@whilenum \cctr@tempa<#2 \do {%
+                \MULTIPLY{#1}{#3}{#3}
+                \ADD{1}{\cctr@tempa}{\cctr@tempa}}%
+       \fi\@OUTPUTSOL{#3}}
+
+\def\INTEGERDIVISION#1#2#3#4{%
+       \begingroup
+       \ABSVALUE{#2}{\cctr@tempd}
+       \@DIVIDE{#1}{#2}{#3}{#4}
+       \ifdim #4\p@<\z@
+          \ifdim #1\p@<\z@
+             \ifdim #2\p@<\z@
+                \ADD{#3}{1}{#3}
+             \else
+                \SUBTRACT{#3}{1}{#3}
+             \fi
+             \ADD{#4}{\cctr@tempd}{#4}
+       \fi\fi\@OUTPUTSOLS{#3}{#4}}
+\def\MODULO#1#2#3{%
+       \begingroup
+       \INTEGERDIVISION{#1}{#2}{\cctr@temp}{#3}\@OUTPUTSOL{#3}}
+\def\INTEGERQUOTIENT#1#2#3{%
+       \begingroup
+       \INTEGERDIVISION{#1}{#2}{#3}{\cctr@temp}\@OUTPUTSOL{#3}}
+\def\@@INTEGERPART#1.#2.#3)#4{\ifnum #11=1 \COPY{0}{#4}
+                              \else \COPY{#1}{#4}\fi}
+\def\@INTEGERPART#1#2{\expandafter\@@INTEGERPART#1..){#2}}
+\def\INTEGERPART#1#2{\begingroup
+                     \ifdim #1\p@<\z@
+                        \MULTIPLY{-1}{#1}{\cctr@temp}
+                        \INTEGERPART{\cctr@temp}{#2}
+                        \ifdim #2\p@<\cctr@temp\p@
+                           \SUBTRACT{-#2}{1}{#2}
+                        \else \COPY{-#2}{#2}
+                        \fi
+                     \else
+                        \@INTEGERPART{#1}{#2}
+                     \fi\@OUTPUTSOL{#2}}
+\let\FLOOR\INTEGERPART
+\def\@@FRACTIONALPART#1.#2.#3)#4{\ifnum #2=11  \COPY{0}{#4}
+                                \else \COPY{0.#2}{#4}\fi}
+\def\@FRACTIONALPART#1#2{\expandafter\@@FRACTIONALPART#1..){#2}}
+\def\FRACTIONALPART#1#2{\begingroup
+                     \ifdim #1\p@<\z@
+                        \INTEGERPART{#1}{\cctr@tempA}
+                        \SUBTRACT{#1}{\cctr@tempA}{#2}
+                     \else
+                        \@FRACTIONALPART{#1}{#2}
+                     \fi\@OUTPUTSOL{#2}}
+\def\TRUNCATE{\@ifnextchar[\@@TRUNCATE\@TRUNCATE}
+\def\@TRUNCATE#1#2{\@@TRUNCATE[2]{#1}{#2}}
+\def\@@TRUNCATE[#1]#2#3{%
+    \begingroup
+    \INTEGERPART{#2}{\cctr@tempa}
+    \ifdim \cctr@tempa\p@ = #2\p@
+       \expandafter\@@@TRUNCATE#2.00000)[#1]{#3}
+    \else
+       \expandafter\@@@TRUNCATE#200000.)[#1]{#3}
+    \fi
+    \@OUTPUTSOL{#3}}
+\def\@@@TRUNCATE#1.#2#3#4#5#6.#7)[#8]#9{%
+    \ifcase #8
+       \COPY{#1}{#9}
+    \or\COPY{#1.#2}{#9}
+    \or\COPY{#1.#2#3}{#9}
+    \or\COPY{#1.#2#3#4}{#9}
+    \or\COPY{#1.#2#3#4#5}{#9}
+    \fi}
+\def\ROUND{\@ifnextchar[\@@ROUND\@ROUND}
+\def\@ROUND#1#2{\@@ROUND[2]{#1}{#2}}
+\def\@@ROUND[#1]#2#3{%
+       \begingroup
+       \ifdim#2\p@<\z@
+           \MULTIPLY{-1}{#2}{\cctr@temp}
+           \@@ROUND[#1]{\cctr@temp}{#3}\COPY{-#3}{#3}
+       \else
+          \@@TRUNCATE[#1]{#2}{\cctr@tempe}
+          \SUBTRACT{#2}{\cctr@tempe}{\cctr@tempc}
+          \POWER{10}{#1}{\cctr@tempb}
+          \MULTIPLY{\cctr@tempb}{\cctr@tempc}{\cctr@tempc}
+          \ifdim\cctr@tempc\p@<0.5\p@
+          \else
+             \DIVIDE{1}{\cctr@tempb}{\cctr@tempb}
+             \ADD{\cctr@tempe}{\cctr@tempb}{\cctr@tempe}
+          \fi
+          \@@TRUNCATE[#1]{\cctr@tempe}{#3}
+       \fi
+       \@OUTPUTSOL{#3}}
+\def\GCD#1#2#3{%
+       \begingroup
+       \ABSVALUE{#1}{\cctr@tempa}
+       \ABSVALUE{#2}{\cctr@tempb}
+       \MAX{\cctr@tempa}{\cctr@tempb}{\cctr@tempc}
+       \MIN{\cctr@tempa}{\cctr@tempb}{\cctr@tempa}
+       \COPY{\cctr@tempc}{\cctr@tempb}
+       \ifnum \cctr@tempa = 0
+          \ifnum \cctr@tempb = 0
+             \cctr@Warnnogcd
+             \let#3\undefined
+          \else
+          \COPY{\cctr@tempb}{#3}
+          \fi
+       \else
+          \@whilenum \cctr@tempa > \z@ \do {%
+             \COPY{\cctr@tempa}{#3}%
+             \MODULO{\cctr@tempb}{\cctr@tempa}{\cctr@tempc}%
+             \COPY\cctr@tempa\cctr@tempb%
+             \COPY\cctr@tempc\cctr@tempa}
+       \fi\ignorespaces\@OUTPUTSOL{#3}}
+\def\LCM#1#2#3{%
+       \GCD{#1}{#2}{#3}%
+       \ifx #3\undefined \COPY{0}{#3}
+       \else
+          \DIVIDE{#1}{#3}{#3}
+          \MULTIPLY{#2}{#3}{#3}
+          \ABSVALUE{#3}{#3}
+       \fi}
+\def\FRACTIONSIMPLIFY#1#2#3#4{%
+       \ifnum #1=\z@
+          \COPY{0}{#3}\COPY{1}{#4}
+       \else
+          \GCD{#1}{#2}{#3}%
+          \DIVIDE{#2}{#3}{#4}
+          \DIVIDE{#1}{#3}{#3}
+          \ifnum #4<0 \MULTIPLY{-1}{#4}{#4}\MULTIPLY{-1}{#3}{#3}\fi
+       \fi\ignorespaces}
+\def\SQUAREROOT#1#2{%
+       \begingroup
+       \ifdim #1\p@ = \z@
+         \COPY{0}{#2}
+       \else
+         \ifdim #1\p@ < \z@
+             \let#2\undefined
+             \cctr@Warnnoposrad{#1}%
+          \else
+             \COPY{#1}{#2}
+             \cctr@lengthb=5\p@
+             \@whilenum \cctr@lengthb>\cctr@epsilon \do {%
+                \COPY{#2}{\cctr@tempw}
+                \DIVIDE{#1}{\cctr@tempw}{\cctr@tempz}
+                \ADD{\cctr@tempw}{\cctr@tempz}{\cctr@tempz}
+                \DIVIDE{\cctr@tempz}{2}{\cctr@tempz}
+                \COPY{\cctr@tempz}{#2}
+                \SUBTRACT{#2}{\cctr@tempw}{\cctr@tempw}
+                \cctr@lengthb=\cctr@tempw\p@%
+                \ifnum
+                   \cctr@lengthb<\z@ \cctr@lengthb=-\cctr@lengthb
+                \fi}
+       \fi\fi\@OUTPUTSOL{#2}}
+\let\SQRT\SQUAREROOT
+\def\SIN#1#2{%
+    \begingroup
+    \ifdim #1\p@=-\numberHALFPI\p@ \COPY{-1}{#2}
+    \else
+         \ifdim #1\p@=\numberHALFPI\p@ \COPY{1}{#2}
+         \else
+              \ifdim #1\p@=\numberTHREEHALFPI\p@ \COPY{-1}{#2}
+               \else
+                   \ifdim#1\p@<-\numberHALFPI\p@
+                      \ADD{#1}{\numberTWOPI}{\cctr@tempb}
+                      \SIN{\cctr@tempb}{#2}
+                   \else
+                      \ifdim #1\p@<\numberHALFPI\p@
+                         \@BASICSINE{#1}{#2}
+                      \else
+                         \ifdim #1\p@<\numberTHREEHALFPI\p@
+                           \SUBTRACT{\numberPI}{#1}{\cctr@tempb}
+                           \SIN{\cctr@tempb}{#2}
+                        \else
+                          \SUBTRACT{#1}{\numberTWOPI}{\cctr@tempb}
+                          \SIN{\cctr@tempb}{#2}
+  \fi\fi\fi\fi\fi\fi\@OUTPUTSOL{#2}}
+\def\@BASICSINE#1#2{%
+       \begingroup
+       \ABSVALUE{#1}{\cctr@tempa}
+          \ifdim\cctr@tempa\p@=\z@ \COPY{0}{#2}
+          \else
+             \ifdim \cctr@tempa\p@<0.009\p@\COPY{#1}{#2}
+             \else
+                \SQUARE{#1}{\cctr@tempa}
+                \DIVIDE{\cctr@tempa}{42}{#2}
+                \SUBTRACT{1}{#2}{#2}
+                \MULTIPLY{#2}{\cctr@tempa}{#2}
+                \DIVIDE{#2}{20}{#2}
+                \SUBTRACT{1}{#2}{#2}
+                \MULTIPLY{#2}{\cctr@tempa}{#2}
+                \DIVIDE{#2}{6}{#2}
+                \SUBTRACT{1}{#2}{#2}
+                \MULTIPLY{#2}{#1}{#2}
+          \fi\fi\@OUTPUTSOL{#2}}
+\def\COS#1#2{%
+        \begingroup
+        \ADD{\numberHALFPI}{#1}{\cctr@tempc}
+        \SIN{\cctr@tempc}{#2}\@OUTPUTSOL{#2}}
+\def\TAN#1#2{%
+          \begingroup
+          \ifdim #1\p@=-\numberHALFPI\p@
+             \cctr@Warninftan{#1}
+             \let#2\undefined
+          \else
+             \ifdim #1\p@=\numberHALFPI\p@
+                 \cctr@Warninftan{#1}
+                 \let#2\undefined
+             \else
+                \ifdim #1\p@<-\numberHALFPI\p@
+                   \ADD{#1}{\numberPI}{\cctr@tempb}
+                   \TAN{\cctr@tempb}{#2}
+                \else
+                   \ifdim #1\p@<\numberHALFPI\p@
+                      \@BASICTAN{#1}{#2}
+                   \else
+                      \SUBTRACT{#1}{\numberPI}{\cctr@tempb}
+                      \TAN{\cctr@tempb}{#2}
+          \fi\fi\fi\fi\@OUTPUTSOL{#2}}
+\def\@BASICTAN#1#2{%
+       \begingroup
+       \ABSVALUE{#1}{\cctr@tempa}
+          \ifdim\cctr@tempa\p@=\z@ \COPY{0}{#2}
+          \else
+             \ifdim\cctr@tempa\p@<0.04\p@
+                \COPY{#1}{#2}
+             \else
+                \DIVIDE{#1}{11}{#2}
+                \DIVIDE{9}{#1}{\cctr@tempa}
+                \SUBTRACT{\cctr@tempa}{#2}{#2}
+                \DIVIDE{1}{#2}{#2}
+                \DIVIDE{7}{#1}{\cctr@tempa}
+                \SUBTRACT{\cctr@tempa}{#2}{#2}
+                \DIVIDE{1}{#2}{#2}
+                \DIVIDE{5}{#1}{\cctr@tempa}
+                \SUBTRACT{\cctr@tempa}{#2}{#2}
+                \DIVIDE{1}{#2}{#2}
+                \DIVIDE{3}{#1}{\cctr@tempa}
+                \SUBTRACT{\cctr@tempa}{#2}{#2}
+                \DIVIDE{1}{#2}{#2}
+                \DIVIDE{1}{#1}{\cctr@tempa}
+                \SUBTRACT{\cctr@tempa}{#2}{#2}
+                \DIVIDE{1}{#2}{#2}
+          \fi\fi\@OUTPUTSOL{#2}}
+\def\COT#1#2{%
+        \begingroup
+        \COS{#1}{#2}
+        \ifdim #2\p@ = \z@
+        \COPY{0}{#2}
+        \else
+        \TAN{#1}{#2}
+        \ifdim #2\p@ = \z@
+        \cctr@Warninfcotan{#1}
+        \let#2\undefined
+        \else
+        \DIVIDE{1}{#2}{#2}
+        \fi\fi\@OUTPUTSOL{#2}}
+\def\DEGtoRAD#1#2{\DIVIDE{#1}{57.29578}{#2}}
+\def\RADtoDEG#1#2{\MULTIPLY{#1}{57.29578}{#2}}
+\def\REDUCERADIANSANGLE#1#2{%
+         \COPY{#1}{#2}
+         \ifdim #1\p@ < -\numberPI\p@
+                 \ADD{#1}{\numberTWOPI}{#2}
+                 \REDUCERADIANSANGLE{#2}{#2}
+         \fi
+         \ifdim #1\p@ >  \numberPI\p@
+                 \SUBTRACT{#1}{\numberTWOPI}{#2}
+                 \REDUCERADIANSANGLE{#2}{#2}
+         \fi
+         \ifdim #1\p@ = -180\p@ \COPY{\numberPI}{#2} \fi}
+\def\REDUCEDEGREESANGLE#1#2{%
+         \COPY{#1}{#2}
+         \ifdim #1\p@ < -180\p@
+                 \ADD{#1}{360}{#2}
+                 \REDUCEDEGREESANGLE{#2}{#2}
+         \fi
+         \ifdim #1\p@ >  180\p@
+                 \SUBTRACT{#1}{360}{#2}
+                 \REDUCEDEGREESANGLE{#2}{#2}
+         \fi
+         \ifdim #1\p@ = -180\p@ \COPY{180}{#2} \fi}
+\def\DEGREESSIN{\@ifnextchar[\@@DEGREESSIN\@DEGREESSIN}
+\def\DEGREESCOS{\@ifnextchar[\@@DEGREESCOS\@DEGREESCOS}
+\def\DEGREESTAN{\@ifnextchar[\@@DEGREESTAN\@DEGREESTAN}
+\def\DEGREESCOT{\@ifnextchar[\@@DEGREESCOT\@DEGREESCOT}
+\def\@DEGREESSIN#1#2{%
+    \begingroup
+    \ifdim #1\p@=-90\p@ \COPY{-1}{#2}
+    \else
+         \ifdim #1\p@=90\p@ \COPY{1}{#2}
+         \else
+                  \ifdim #1\p@=270\p@ \COPY{-1}{#2}
+         \else
+           \ifdim#1\p@<-90\p@
+                \ADD{#1}{360}{\cctr@tempb}
+                \DEGREESSIN{\cctr@tempb}{#2}
+           \else
+              \ifdim #1\p@<90\p@
+                    \DEGtoRAD{#1}{\cctr@tempb}
+                    \@BASICSINE{\cctr@tempb}{#2}
+                  \else
+                       \ifdim #1\p@<270\p@
+                         \SUBTRACT{180}{#1}{\cctr@tempb}
+                          \DEGREESSIN{\cctr@tempb}{#2}
+                         \else
+                              \SUBTRACT{#1}{360}{\cctr@tempb}
+                              \DEGREESSIN{\cctr@tempb}{#2}
+  \fi\fi\fi\fi\fi\fi\@OUTPUTSOL{#2}}
+\def\@DEGREESCOS#1#2{%
+        \begingroup
+        \ADD{90}{#1}{\cctr@tempc}
+        \DEGREESSIN{\cctr@tempc}{#2}\@OUTPUTSOL{#2}}
+\def\@DEGREESTAN#1#2{%
+          \begingroup
+          \ifdim #1\p@=-90\p@
+          \cctr@Warninftan{#1}
+          \let#2\undefined
+          \else
+            \ifdim #1\p@=90\p@
+            \cctr@Warninftan{#1}
+            \let#2\undefined
+          \else
+          \ifdim #1\p@<-90\p@
+            \ADD{#1}{180}{\cctr@tempb} \DEGREESTAN{\cctr@tempb}{#2}
+          \else
+              \ifdim #1\p@<90\p@
+                   \DEGtoRAD{#1}{\cctr@tempb}
+                   \@BASICTAN{\cctr@tempb}{#2}
+                 \else
+                     \SUBTRACT{#1}{180}{\cctr@tempb}
+                     \DEGREESTAN{\cctr@tempb}{#2}
+   \fi\fi\fi\fi\@OUTPUTSOL{#2}}
+\def\@DEGREESCOT#1#2{%
+        \begingroup
+        \DEGREESCOS{#1}{#2}
+        \ifdim #2\p@ = \z@
+        \COPY{0}{#2}
+        \else
+        \DEGREESTAN{#1}{#2}
+        \ifdim #2\p@ = \z@
+        \cctr@Warninfcotan{#1}
+        \let#2\undefined
+        \else
+        \DIVIDE{1}{#2}{#2}
+        \fi\fi\@OUTPUTSOL{#2}}
+\def\@@DEGREESSIN[#1]#2#3{\@CONVERTDEG{#1}{#2}
+        \@DEGREESSIN{\@DEGREES}{#3}}
+\def\@@DEGREESCOS[#1]#2#3{\@CONVERTDEG{#1}{#2}
+        \DEGREESCOS{\@DEGREES}{#3}}
+\def\@@DEGREESTAN[#1]#2#3{\@CONVERTDEG{#1}{#2}
+        \DEGREESTAN{\@DEGREES}{#3}}
+\def\@@DEGREESCOT[#1]#2#3{\@CONVERTDEG{#1}{#2}
+        \DEGREESCOT{\@DEGREES}{#3}}
+\def\@CONVERTDEG#1#2{\DIVIDE{#2}{#1}{\@DEGREES}
+        \MULTIPLY{\@DEGREES}{360}{\@DEGREES}}
+\def\EXP{\@ifnextchar[\@@EXP\@EXP}
+\def\@@EXP[#1]#2#3{%
+      \begingroup
+      \ifdim #1\p@<\cctr@epsilon
+          \cctr@Warninfexpb{#1}{#2}
+          \let#3\undefined
+      \else
+          \LOG{#1}{\cctr@log}
+          \MULTIPLY{#2}{\cctr@log}{\cctr@log}
+          \@EXP{\cctr@log}{#3}
+      \fi\@OUTPUTSOL{#3}}
+\def\@EXP#1#2{%
+      \begingroup
+      \ABSVALUE{#1}{\cctr@absval}
+      \ifdim \cctr@absval\p@>\cctr@logmaxnum\p@
+              \cctr@Warninfexp{#1}
+             \let#2\undefined
+      \else
+          \ifdim #1\p@ < \z@
+            \ifdim #1\p@ > -6.00002\p@
+               \@BASICEXP{#1}{#2}
+            \else
+               \DIVIDE{#1}{2}{\cctr@expt}
+               \@EXP{\cctr@expt}{\cctr@expy}
+               \SQUARE{\cctr@expy}{#2}
+            \fi
+          \else
+               \ifdim #1\p@ < 3.00002\p@
+                  \@BASICEXP{#1}{#2}
+               \else
+                  \DIVIDE{#1}{2}{\cctr@expt}
+                  \@EXP{\cctr@expt}{\cctr@expy}
+                  \SQUARE{\cctr@expy}{#2}
+               \fi
+\fi\fi\@OUTPUTSOL{#2}}
+\def\@BASICEXP#1#2{%
+       \begingroup
+       \SQUARE{#1}\cctr@tempa
+       \DIVIDE{\cctr@tempa}{396}{#2}
+       \ADD{1}{#2}{#2}
+       \DIVIDE\cctr@tempa{#2}{#2}
+       \DIVIDE{#2}{256}{#2}
+       \ADD{1}{#2}{#2}
+       \DIVIDE\cctr@tempa{#2}{#2}
+       \DIVIDE{#2}{140}{#2}
+       \ADD{1}{#2}{#2}
+       \DIVIDE\cctr@tempa{#2}{#2}
+       \DIVIDE{#2}{60}{#2}
+       \ADD{1}{#2}{#2}
+       \DIVIDE\cctr@tempa{#2}{#2}
+       \DIVIDE{#2}{6}{#2}
+       \ADD{2}{#2}{#2}
+       \SUBTRACT{#2}{#1}{#2}
+       \DIVIDE{#1}{#2}{#2}
+       \MULTIPLY{2}{#2}{#2}
+       \ADD{1}{#2}{#2}\@OUTPUTSOL{#2}}
+\def\COSH#1#2{%
+       \begingroup
+       \ABSVALUE{#1}{\cctr@absval}
+       \ifdim \cctr@absval\p@>\cctr@logmaxnum\p@
+          \cctr@Warninfexp{#1}
+          \let#2\undefined
+       \else
+          \EXP{#1}{\cctr@expx}
+          \MULTIPLY{-1}{#1}{\cctr@minust}
+          \EXP{\cctr@minust}{\cctr@expminusx}
+          \ADD{\cctr@expx}{\cctr@expminusx}{#2}
+          \DIVIDE{#2}{2}{#2}
+       \fi\@OUTPUTSOL{#2}}
+\def\SINH#1#2{%
+       \begingroup
+       \ABSVALUE{#1}{\cctr@absval}
+       \ifdim \cctr@absval\p@>\cctr@logmaxnum\p@
+          \cctr@Warninfexp{#1}
+          \let#2\undefined
+       \else
+          \EXP{#1}{\cctr@expx}
+          \MULTIPLY{-1}{#1}{\cctr@minust}
+          \EXP{\cctr@minust}{\cctr@expminusx}
+          \SUBTRACT{\cctr@expx}{\cctr@expminusx}{#2}
+          \DIVIDE{#2}{2}{#2}
+       \fi\@OUTPUTSOL{#2}}
+\def\TANH#1#2{%
+       \begingroup
+       \ABSVALUE{#1}{\cctr@absval}
+       \ifdim \cctr@absval\p@>\cctr@logmaxnum\p@
+          \cctr@Warninfexp{#1}
+          \let#2\undefined
+       \else
+          \SINH{#1}{\cctr@tanhnum}
+          \COSH{#1}{\cctr@tanhden}
+          \DIVIDE{\cctr@tanhnum}{\cctr@tanhden}{#2}
+       \fi\@OUTPUTSOL{#2}}
+\def\COTH#1#2{%
+       \begingroup
+       \ABSVALUE{#1}{\cctr@absval}
+       \ifdim \cctr@absval\p@>\cctr@logmaxnum\p@
+          \cctr@Warninfexp{#1}
+          \let#2\undefined
+       \else
+          \SINH{#1}{\cctr@tanhden}
+          \COSH{#1}{\cctr@tanhnum}
+          \DIVIDE\cctr@tanhnum\cctr@tanhden{#2}
+       \fi\@OUTPUTSOL{#2}}
+\def\LOG{\@ifnextchar[\@@LOG\@LOG}
+\def\@LOG#1#2{%
+       \begingroup
+       \ifdim #1\p@<\cctr@epsilon
+          \cctr@Warninflog{#1}
+          \let#2\undefined
+       \else
+       \ifdim #1\p@ > \numberETWO\p@
+          \DIVIDE{#1}{\numberE}{\cctr@ae}
+          \@LOG{\cctr@ae}{#2}
+          \ADD{1}{#2}{#2}
+       \else
+          \ifdim #1\p@ < 1\p@
+             \MULTIPLY{\numberE}{#1}{\cctr@ae}
+             \LOG{\cctr@ae}{#2}
+             \SUBTRACT{#2}{1}{#2}
+          \else
+             \@BASICLOG{#1}{#2}
+\fi\fi\fi\@OUTPUTSOL{#2}}
+\def\@@LOG[#1]#2#3{\begingroup
+       \@LOG{#1}{\cctr@loga}
+       \@LOG{#2}{\cctr@logx}
+       \DIVIDE{\cctr@logx}{\cctr@loga}{#3}\@OUTPUTSOL{#3}}
+\def\@BASICLOG#1#2{\begingroup
+             \SUBTRACT{#1}{1}{\cctr@tempw}
+             \cctr@lengthb=5\p@%
+             \cctr@lengtha=\cctr@epsilon%
+       \@whilenum \cctr@lengthb>\cctr@lengtha \do {%
+           \COPY{\cctr@tempw}{\cctr@tempoldw}
+           \EXP{\cctr@tempw}{\cctr@tempxw}
+           \DIVIDE{#1}{\cctr@tempxw}{\cctr@tempxw}
+           \ADD{\cctr@tempw}{\cctr@tempxw}{\cctr@tempw}
+           \SUBTRACT{\cctr@tempw}{1}{\cctr@tempw}
+           \SUBTRACT{\cctr@tempw}{\cctr@tempoldw}{\cctr@tempdif}
+           \cctr@lengthb=\cctr@tempdif\p@%
+           \ifnum
+              \cctr@lengthb<\z@ \cctr@lengthb=-\cctr@lengthb
+           \fi}%
+       \COPY{\cctr@tempw}{#2}\@OUTPUTSOL{#2}}
+\def\VECTORSIZE(#1)#2{\expandafter\@VECTORSIZE(#1,,){#2}}
+\def\@VECTORSIZE(#1,#2,#3,#4)#5{\ifx$#3$\COPY{2}{#5}
+                                \else\COPY{3}{#5}\fi\ignorespaces}
+\def\@@VECTORCOPY(#1,#2)(#3,#4){%
+    \COPY{#1}{#3}\COPY{#2}{#4}}
+
+\def\@@@VECTORCOPY(#1,#2,#3)(#4,#5,#6){%
+    \COPY{#1}{#4}\COPY{#2}{#5}\COPY{#3}{#6}}
+
+\def\VECTORCOPY(#1)(#2){%
+        \VECTORSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@VECTORCOPY(#1)(#2)
+        \else \@@@VECTORCOPY(#1)(#2)\fi}
+\def\@@VECTORGLOBALCOPY(#1,#2)(#3,#4){%
+    \GLOBALCOPY{#1}{#3}\GLOBALCOPY{#2}{#4}}
+
+\def\@@@VECTORGLOBALCOPY(#1,#2,#3)(#4,#5,#6){%
+    \GLOBALCOPY{#1}{#4}\GLOBALCOPY{#2}{#5}\GLOBALCOPY{#3}{#6}}
+
+\def\VECTORGLOBALCOPY(#1)(#2){%
+        \VECTORSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@VECTORGLOBALCOPY(#1)(#2)
+        \else \@@@VECTORGLOBALCOPY(#1)(#2)\fi}
+\def\@@OUTPUTVECTOR(#1,#2){%
+    \VECTORGLOBALCOPY(#1,#2)(\cctr@outa,\cctr@outb)
+    \endgroup\VECTORCOPY(\cctr@outa,\cctr@outb)(#1,#2)}
+
+\def\@@@OUTPUTVECTOR(#1,#2,#3){%
+    \VECTORGLOBALCOPY(#1,#2,#3)(\cctr@outa,\cctr@outb,\cctr@outc)
+    \endgroup\VECTORCOPY(\cctr@outa,\cctr@outb,\cctr@outc)(#1,#2,#3)}
+
+\def\@OUTPUTVECTOR(#1){\VECTORSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@OUTPUTVECTOR(#1)
+        \else \@@@OUTPUTVECTOR(#1)\fi}
+\def\@@SCALARPRODUCT(#1,#2)(#3,#4)#5{%
+       \MULTIPLY{#1}{#3}{#5}
+       \MULTIPLY{#2}{#4}\cctr@tempa
+       \ADD{#5}{\cctr@tempa}{#5}}
+
+\def\@@@SCALARPRODUCT(#1,#2,#3)(#4,#5,#6)#7{%
+       \MULTIPLY{#1}{#4}{#7}
+       \MULTIPLY{#2}{#5}\cctr@tempa
+       \ADD{#7}{\cctr@tempa}{#7}
+       \MULTIPLY{#3}{#6}\cctr@tempa
+       \ADD{#7}{\cctr@tempa}{#7}}
+
+\def\SCALARPRODUCT(#1)(#2)#3{%
+        \begingroup
+        \VECTORSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@SCALARPRODUCT(#1)(#2){#3}
+        \else \@@@SCALARPRODUCT(#1)(#2){#3}\fi\@OUTPUTSOL{#3}}
+\def\@@VECTORADD(#1,#2)(#3,#4)(#5,#6){%
+       \ADD{#1}{#3}{#5}
+       \ADD{#2}{#4}{#6}}
+
+\def\@@@VECTORADD(#1,#2,#3)(#4,#5,#6)(#7,#8,#9){%
+       \ADD{#1}{#4}{#7}
+       \ADD{#2}{#5}{#8}
+       \ADD{#3}{#6}{#9}}
+
+\def\VECTORADD(#1)(#2)(#3){%
+        \VECTORSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@VECTORADD(#1)(#2)(#3)
+        \else \@@@VECTORADD(#1)(#2)(#3)\fi}
+\def\@@VECTORSUB(#1,#2)(#3,#4)(#5,#6){%
+       \VECTORADD(#1,#2)(-#3,-#4)(#5,#6)}
+
+\def\@@@VECTORSUB(#1,#2,#3)(#4,#5,#6)(#7,#8,#9){%
+       \VECTORADD(#1,#2,#3)(-#4,-#5,-#6)(#7,#8,#9)}
+
+\def\VECTORSUB(#1)(#2)(#3){%
+        \VECTORSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@VECTORSUB(#1)(#2)(#3)
+        \else \@@@VECTORSUB(#1)(#2)(#3)\fi}
+\def\@@VECTORABSVALUE(#1,#2)(#3,#4){%
+       \ABSVALUE{#1}{#3}\ABSVALUE{#2}{#4}}
+
+\def\@@@VECTORABSVALUE(#1,#2,#3)(#4,#5,#6){%
+       \ABSVALUE{#1}{#4}\ABSVALUE{#2}{#5}\ABSVALUE{#3}{#6}}
+
+\def\VECTORABSVALUE(#1)(#2){%
+        \VECTORSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@VECTORABSVALUE(#1)(#2)
+        \else \@@@VECTORABSVALUE(#1)(#2)\fi}
+\def\@@SCALARVECTORPRODUCT#1(#2,#3)(#4,#5){%
+       \MULTIPLY{#1}{#2}{#4}
+       \MULTIPLY{#1}{#3}{#5}}
+
+\def\@@@SCALARVECTORPRODUCT#1(#2,#3,#4)(#5,#6,#7){%
+       \MULTIPLY{#1}{#2}{#5}
+       \MULTIPLY{#1}{#3}{#6}
+       \MULTIPLY{#1}{#4}{#7}}
+
+\def\SCALARVECTORPRODUCT#1(#2)(#3){%
+        \VECTORSIZE(#2){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@SCALARVECTORPRODUCT{#1}(#2)(#3)
+        \else \@@@SCALARVECTORPRODUCT{#1}(#2)(#3)\fi}
+\def\VECTORNORM(#1)#2{%
+       \begingroup
+       \SCALARPRODUCT(#1)(#1){\cctr@temp}
+       \SQUAREROOT{\cctr@temp}{#2}\@OUTPUTSOL{#2}}
+\def\UNITVECTOR(#1)(#2){%
+       \begingroup
+       \VECTORNORM(#1){\cctr@tempa}
+       \DIVIDE{1}{\cctr@tempa}{\cctr@tempa}
+       \SCALARVECTORPRODUCT{\cctr@tempa}(#1)(#2)\@OUTPUTVECTOR(#2)}
+\def\@TDMATRIXCOPY(#1,#2,#3;#4,#5,#6;#7,#8,#9){%
+       \COPY{#1}{\cctr@solAA}
+       \COPY{#2}{\cctr@solAB}
+       \COPY{#3}{\cctr@solAC}
+       \COPY{#4}{\cctr@solBA}
+       \COPY{#5}{\cctr@solBB}
+       \COPY{#6}{\cctr@solBC}
+       \COPY{#7}{\cctr@solCA}
+       \COPY{#8}{\cctr@solCB}
+       \COPY{#9}{\cctr@solCC}}
+\def\@TDMATRIXSOL(#1,#2,#3;#4,#5,#6;#7,#8,#9){%
+       \COPY{\cctr@solAA}{#1}
+       \COPY{\cctr@solAB}{#2}
+       \COPY{\cctr@solAC}{#3}
+       \COPY{\cctr@solBA}{#4}
+       \COPY{\cctr@solBB}{#5}
+       \COPY{\cctr@solBC}{#6}
+       \COPY{\cctr@solCA}{#7}
+       \COPY{\cctr@solCB}{#8}
+       \COPY{\cctr@solCC}{#9}}
+\def\@TDMATRIXGLOBALSOL(#1,#2,#3;#4,#5,#6;#7,#8,#9){%
+       \GLOBALCOPY{\cctr@solAA}{#1}
+       \GLOBALCOPY{\cctr@solAB}{#2}
+       \GLOBALCOPY{\cctr@solAC}{#3}
+       \GLOBALCOPY{\cctr@solBA}{#4}
+       \GLOBALCOPY{\cctr@solBB}{#5}
+       \GLOBALCOPY{\cctr@solBC}{#6}
+       \GLOBALCOPY{\cctr@solCA}{#7}
+       \GLOBALCOPY{\cctr@solCB}{#8}
+       \GLOBALCOPY{\cctr@solCC}{#9}}
+\def\@TDMATRIXNOSOL(#1,#2,#3;#4,#5,#6;#7,#8,#9){%
+          \let#1\undefined
+          \let#2\undefined
+          \let#3\undefined
+          \let#4\undefined
+          \let#5\undefined
+          \let#6\undefined
+          \let#7\undefined
+          \let#8\undefined
+          \let#9\undefined
+          }
+\def\@@TDMATRIXSOL(#1,#2,#3;#4,#5,#6;#7,#8,#9){%
+       \ifx\cctr@solAA\undefined
+          \@TDMATRIXNOSOL(#1,#2,#3;#4,#5,#6;#7,#8,#9)%
+       \else
+          \@TDMATRIXSOL(#1,#2,#3;#4,#5,#6;#7,#8,#9)\fi}
+\def\@NUMBERSOL#1{\COPY{\cctr@sol}{#1}}
+\def\MATRIXSIZE(#1)#2{\expandafter\@MATRIXSIZE(#1;;){#2}}
+\def\@MATRIXSIZE(#1;#2;#3;#4)#5{\ifx$#3$\COPY{2}{#5}
+                                \else\COPY{3}{#5}\fi\ignorespaces}
+\def\@@MATRIXCOPY(#1,#2;#3,#4)(#5,#6;#7,#8){%
+    \COPY{#1}{#5}\COPY{#2}{#6}\COPY{#3}{#7}\COPY{#4}{#8}}
+
+\def\@@@MATRIXCOPY(#1,#2,#3;#4,#5,#6;#7,#8,#9){%
+     \@TDMATRIXCOPY(#1,#2,#3;#4,#5,#6;#7,#8,#9)
+     \@TDMATRIXSOL}
+
+\def\MATRIXCOPY(#1)(#2){%
+        \MATRIXSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@MATRIXCOPY(#1)(#2)
+        \else \@@@MATRIXCOPY(#1)(#2)\fi}
+\def\@@MATRIXGLOBALCOPY(#1,#2;#3,#4)(#5,#6;#7,#8){%
+    \GLOBALCOPY{#1}{#5}\GLOBALCOPY{#2}{#6}\GLOBALCOPY{#3}{#7}\GLOBALCOPY{#4}{#8}}
+
+\def\@@@MATRIXGLOBALCOPY(#1,#2,#3;#4,#5,#6;#7,#8,#9){%
+     \@TDMATRIXCOPY(#1,#2,#3;#4,#5,#6;#7,#8,#9)
+     \@TDMATRIXGLOBALSOL}
+
+\def\MATRIXGLOBALCOPY(#1)(#2){%
+        \MATRIXSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@MATRIXGLOBALCOPY(#1)(#2)
+        \else \@@@MATRIXGLOBALCOPY(#1)(#2)\fi}
+\def\@@OUTPUTMATRIX(#1,#2;#3,#4){%
+    \MATRIXGLOBALCOPY(#1,#2;#3,#4)(\cctr@outa,\cctr@outb;\cctr@outc,\cctr@outd)
+    \endgroup\MATRIXCOPY(\cctr@outa,\cctr@outb;\cctr@outc,\cctr@outd)(#1,#2;#3,#4)}
+
+\def\@@@OUTPUTMATRIX(#1,#2,#3;#4,#5,#6;#7,#8,#9){%
+    \MATRIXGLOBALCOPY(#1,#2,#3;#4,#5,#6;#7,#8,#9)(%
+        \cctr@outa,\cctr@outb,\cctr@outc;
+        \cctr@outd,\cctr@oute,\cctr@outf;
+        \cctr@outg,\cctr@outh,\cctr@outi)
+    \endgroup\MATRIXCOPY(%
+        \cctr@outa,\cctr@outb,\cctr@outc;
+        \cctr@outd,\cctr@oute,\cctr@outf;
+        \cctr@outg,\cctr@outh,\cctr@outi)(#1,#2,#3;#4,#5,#6;#7,#8,#9)}
+
+\def\@OUTPUTMATRIX(#1){\MATRIXSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@OUTPUTMATRIX(#1)
+        \else \@@@OUTPUTMATRIX(#1)\fi}
+\def\@@TRANSPOSEMATRIX(#1,#2;#3,#4)(#5,#6;#7,#8){%
+       \COPY{#1}{#5}\COPY{#3}{#6}\COPY{#2}{#7}\COPY{#4}{#8}}
+
+\def\@@@TRANSPOSEMATRIX(#1,#2,#3;#4,#5,#6;#7,#8,#9){%
+       \@TDMATRIXCOPY(#1,#4,#7;#2,#5,#8;#3,#6,#9)
+       \@TDMATRIXSOL}
+
+\def\TRANSPOSEMATRIX(#1)(#2){%
+        \begingroup
+        \MATRIXSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@TRANSPOSEMATRIX(#1)(#2)
+        \else \@@@TRANSPOSEMATRIX(#1)(#2)\fi\@OUTPUTMATRIX(#2)}
+\def\@@MATRIXADD(#1;#2)(#3;#4)(#5,#6;#7,#8){%
+       \VECTORADD(#1)(#3)(#5,#6)
+       \VECTORADD(#2)(#4)(#7,#8)}
+
+\def\@@@MATRIXADD(#1;#2;#3)(#4;#5;#6){%
+       \VECTORADD(#1)(#4)(\cctr@solAA,\cctr@solAB,\cctr@solAC)
+       \VECTORADD(#2)(#5)(\cctr@solBA,\cctr@solBB,\cctr@solBC)
+       \VECTORADD(#3)(#6)(\cctr@solCA,\cctr@solCB,\cctr@solCC)
+       \@TDMATRIXSOL}
+
+\def\MATRIXADD(#1)(#2)(#3){%
+        \begingroup
+        \MATRIXSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@MATRIXADD(#1)(#2)(#3)
+        \else \@@@MATRIXADD(#1)(#2)(#3)\fi\@OUTPUTMATRIX(#3)}
+\def\@@MATRIXSUB(#1;#2)(#3;#4)(#5,#6;#7,#8){%
+       \VECTORSUB(#1)(#3)(#5,#6)
+       \VECTORSUB(#2)(#4)(#7,#8)}
+
+\def\@@@MATRIXSUB(#1;#2;#3)(#4;#5;#6){%
+       \VECTORSUB(#1)(#4)(\cctr@solAA,\cctr@solAB,\cctr@solAC)
+       \VECTORSUB(#2)(#5)(\cctr@solBA,\cctr@solBB,\cctr@solBC)
+       \VECTORSUB(#3)(#6)(\cctr@solCA,\cctr@solCB,\cctr@solCC)
+       \@TDMATRIXSOL}
+
+\def\MATRIXSUB(#1)(#2)(#3){%
+        \begingroup
+        \MATRIXSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@MATRIXSUB(#1)(#2)(#3)
+        \else \@@@MATRIXSUB(#1)(#2)(#3)\fi\@OUTPUTMATRIX(#3)}
+\def\@@MATRIXABSVALUE(#1;#2)(#3;#4){%
+       \VECTORABSVALUE(#1)(#3)\VECTORABSVALUE(#2)(#4)}
+
+\def\@@@MATRIXABSVALUE(#1;#2;#3)(#4;#5;#6){%
+       \VECTORABSVALUE(#1)(#4)\VECTORABSVALUE(#2)(#5)\VECTORABSVALUE(#3)(#6)}
+
+\def\MATRIXABSVALUE(#1)(#2){%
+        \begingroup
+        \MATRIXSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@MATRIXABSVALUE(#1)(#2)
+        \else \@@@MATRIXABSVALUE(#1)(#2)\fi\@OUTPUTMATRIX(#2)}
+
+\def\@@MATRIXVECTORPRODUCT(#1;#2)(#3)(#4,#5){%
+       \SCALARPRODUCT(#1)(#3){#4}
+       \SCALARPRODUCT(#2)(#3){#5}}
+
+\def\@@@MATRIXVECTORPRODUCT(#1;#2;#3)(#4)(#5,#6,#7){%
+       \SCALARPRODUCT(#1)(#4){#5}
+       \SCALARPRODUCT(#2)(#4){#6}
+       \SCALARPRODUCT(#3)(#4){#7}}
+
+\def\MATRIXVECTORPRODUCT(#1)(#2)(#3){%
+        \begingroup
+        \MATRIXSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@MATRIXVECTORPRODUCT(#1)(#2)(#3)
+        \else \@@@MATRIXVECTORPRODUCT(#1)(#2)(#3)\fi\@OUTPUTVECTOR(#3)}
+
+\def\@@VECTORMATRIXPRODUCT(#1)(#2,#3;#4,#5)(#6,#7){%
+       \SCALARPRODUCT(#1)(#2,#4){#6}
+       \SCALARPRODUCT(#1)(#3,#5){#7}}
+
+\def\@@@VECTORMATRIXPRODUCT(#1,#2,#3)(#4;#5;#6)(#7){%
+       \SCALARVECTORPRODUCT{#1}(#4)(#7)
+       \SCALARVECTORPRODUCT{#2}(#5)(\cctr@tempa,\cctr@tempb,\cctr@tempc)
+       \VECTORADD(#7)(\cctr@tempa,\cctr@tempb,\cctr@tempc)(#7)
+       \SCALARVECTORPRODUCT{#3}(#6)(\cctr@tempa,\cctr@tempb,\cctr@tempc)
+       \VECTORADD(#7)(\cctr@tempa,\cctr@tempb,\cctr@tempc)(#7)}
+
+\def\VECTORMATRIXPRODUCT(#1)(#2)(#3){%
+        \begingroup
+        \VECTORSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@VECTORMATRIXPRODUCT(#1)(#2)(#3)
+        \else \@@@VECTORMATRIXPRODUCT(#1)(#2)(#3)\fi\@OUTPUTVECTOR(#3)}
+
+\def\@@SCALARMATRIXPRODUCT#1(#2;#3)(#4,#5;#6,#7){%
+       \SCALARVECTORPRODUCT{#1}(#2)(#4,#5)
+       \SCALARVECTORPRODUCT{#1}(#3)(#6,#7)}
+
+\def\@@@SCALARMATRIXPRODUCT#1(#2;#3;#4){%
+       \SCALARVECTORPRODUCT{#1}(#2)(\cctr@solAA,\cctr@solAB,\cctr@solAC)
+       \SCALARVECTORPRODUCT{#1}(#3)(\cctr@solBA,\cctr@solBB,\cctr@solBC)
+       \SCALARVECTORPRODUCT{#1}(#4)(\cctr@solCA,\cctr@solCB,\cctr@solCC)
+       \@TDMATRIXSOL}
+
+\def\SCALARMATRIXPRODUCT#1(#2)(#3){%
+        \begingroup
+        \MATRIXSIZE(#2){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@SCALARMATRIXPRODUCT{#1}(#2)(#3)
+        \else \@@@SCALARMATRIXPRODUCT{#1}(#2)(#3)\fi\@OUTPUTMATRIX(#3)}
+\def\@@MATRIXPRODUCT(#1)(#2,#3;#4,#5)(#6,#7;#8,#9){%
+       \MATRIXVECTORPRODUCT(#1)(#2,#4)(#6,#8)
+       \MATRIXVECTORPRODUCT(#1)(#3,#5)(#7,#9)}
+
+\def\@@@MATRIXPRODUCT(#1;#2;#3)(#4){%
+       \VECTORMATRIXPRODUCT(#1)(#4)(\cctr@solAA,\cctr@solAB,\cctr@solAC)
+       \VECTORMATRIXPRODUCT(#2)(#4)(\cctr@solBA,\cctr@solBB,\cctr@solBC)
+       \VECTORMATRIXPRODUCT(#3)(#4)(\cctr@solCA,\cctr@solCB,\cctr@solCC)
+       \@TDMATRIXSOL}
+
+\def\MATRIXPRODUCT(#1)(#2)(#3){%
+        \begingroup
+        \MATRIXSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@MATRIXPRODUCT(#1)(#2)(#3)
+        \else \@@@MATRIXPRODUCT(#1)(#2)(#3)\fi\@OUTPUTMATRIX(#3)}
+\def\@@DETERMINANT(#1,#2;#3,#4)#5{%
+       \MULTIPLY{#1}{#4}{#5}
+       \MULTIPLY{#2}{#3}{\cctr@tempa}
+       \SUBTRACT{#5}{\cctr@tempa}{#5}}
+
+\def\@@@DETERMINANT(#1,#2,#3;#4,#5,#6;#7,#8,#9){%
+       \DETERMINANT(#5,#6;#8,#9){\cctr@det}\MULTIPLY{#1}{\cctr@det}{\cctr@sol}
+       \DETERMINANT(#6,#4;#9,#7){\cctr@det}\MULTIPLY{#2}{\cctr@det}{\cctr@det}
+                                        \ADD{\cctr@sol}{\cctr@det}{\cctr@sol}
+       \DETERMINANT(#4,#5;#7,#8){\cctr@det}\MULTIPLY{#3}{\cctr@det}{\cctr@det}
+                                        \ADD{\cctr@sol}{\cctr@det}{\cctr@sol}
+       \@NUMBERSOL}
+
+\def\DETERMINANT(#1)#2{%
+        \begingroup
+        \MATRIXSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@DETERMINANT(#1){#2}
+        \else \@@@DETERMINANT(#1){#2}\fi\@OUTPUTSOL{#2}}
+\def\@@INVERSEMATRIX(#1,#2;#3,#4)(#5,#6;#7,#8){%
+       \ifdim \cctr@@det\p@ <\cctr@epsilon  % Matrix is singular
+          \let#5\undefined
+          \let#6\undefined
+          \let#7\undefined
+          \let#8\undefined
+          \cctr@Warnsingmatrix{#1}{#2}{#3}{#4}%
+       \else \COPY{#1}{#8}
+          \COPY{#4}{#5}
+          \MULTIPLY{-1}{#3}{#7}
+          \MULTIPLY{-1}{#2}{#6}
+          \DIVIDE{1}{\cctr@det}{\cctr@det}
+          \SCALARMATRIXPRODUCT{\cctr@det}(#5,#6;#7,#8)(#5,#6;#7,#8)
+       \fi}
+
+\def\@@@INVERSEMATRIX(#1,#2,#3;#4,#5,#6;#7,#8,#9){%
+              \ifdim \cctr@@det\p@ <\cctr@epsilon  % Matrix is singular
+          \@TDMATRIXNOSOL(\cctr@solAA,\cctr@solAB,\cctr@solAC;
+                          \cctr@solBA,\cctr@solBB,\cctr@solBC;
+                          \cctr@solCA,\cctr@solCB,\cctr@solCC)
+          \cctr@WarnsingTDmatrix{#1}{#2}{#3}{#4}{#5}{#6}{#7}{#8}{#9}%
+       \else
+          \@ADJMATRIX(#1,#2,#3;#4,#5,#6;#7,#8,#9)
+          \@SCLRDIVVECT{\cctr@det}(\cctr@solAA,\cctr@solAB,\cctr@solAC)(%
+                                   \cctr@solAA,\cctr@solAB,\cctr@solAC)
+          \@SCLRDIVVECT{\cctr@det}(\cctr@solBA,\cctr@solBB,\cctr@solBC)(%
+                                   \cctr@solBA,\cctr@solBB,\cctr@solBC)
+          \@SCLRDIVVECT{\cctr@det}(\cctr@solCA,\cctr@solCB,\cctr@solCC)(%
+                                   \cctr@solCA,\cctr@solCB,\cctr@solCC)
+       \fi
+       \@@TDMATRIXSOL}
+
+\def\@SCLRDIVVECT#1(#2,#3,#4)(#5,#6,#7){%
+             \DIVIDE{#2}{#1}{#5}\DIVIDE{#3}{#1}{#6}\DIVIDE{#4}{#1}{#7}}
+
+\def\@ADJMATRIX(#1,#2,#3;#4,#5,#6;#7,#8,#9){%
+          \DETERMINANT(#5,#6;#8,#9){\cctr@solAA}
+          \DETERMINANT(#6,#4;#9,#7){\cctr@solBA}
+          \DETERMINANT(#4,#5;#7,#8){\cctr@solCA}
+          \DETERMINANT(#8,#9;#2,#3){\cctr@solAB}
+          \DETERMINANT(#1,#3;#7,#9){\cctr@solBB}
+          \DETERMINANT(#2,#1;#8,#7){\cctr@solCB}
+          \DETERMINANT(#2,#3;#5,#6){\cctr@solAC}
+          \DETERMINANT(#3,#1;#6,#4){\cctr@solBC}
+          \DETERMINANT(#1,#2;#4,#5){\cctr@solCC}}
+
+\def\INVERSEMATRIX(#1)(#2){%
+        \begingroup
+        \DETERMINANT(#1){\cctr@det}
+        \ABSVALUE{\cctr@det}{\cctr@@det}
+        \MATRIXSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@INVERSEMATRIX(#1)(#2)
+        \else
+           \@@@INVERSEMATRIX(#1)(#2)\fi\@OUTPUTMATRIX(#2)}
+\def\@INCSYS#1#2{\cctr@WarnIncLinSys
+       \let#1\undefined\let#2\undefined}
+
+\def\@SOLPART#1#2#3#4{\cctr@WarnIndLinSys
+                      \DIVIDE{#1}{#2}{#3}
+                      \COPY{0}{#4}}
+
+\def\@TDINCSYS(#1,#2,#3){\cctr@WarnIncTDLinSys
+                         \let#1\undefined
+                         \let#2\undefined
+                         \let#3\undefined}
+
+\def\@@SOLVELINEARSYSTEM(#1,#2;#3,#4)(#5,#6)(#7,#8){%
+        \DETERMINANT(#1,#2;#3,#4)\cctr@deta
+        \DETERMINANT(#5,#2;#6,#4)\cctr@detb
+        \DETERMINANT(#1,#5;#3,#6)\cctr@detc
+        \ABSVALUE{\cctr@deta}{\cctr@@deta}
+        \ABSVALUE{\cctr@detb}{\cctr@@detb}
+        \ABSVALUE{\cctr@detc}{\cctr@@detc}
+        \ifdim \cctr@@deta\p@>\cctr@epsilon% Regular matrix. Determinate system
+           \DIVIDE{\cctr@detb}{\cctr@deta}{#7}
+           \DIVIDE{\cctr@detc}{\cctr@deta}{#8}
+        \else  % Singular matrix    \cctr@deta=0
+           \ifdim \cctr@@detb\p@>\cctr@epsilon% Incompatible system
+              \@INCSYS#7#8
+           \else
+              \ifdim \cctr@@detc\p@>\cctr@epsilon% Incompatible system
+                 \@INCSYS#7#8
+              \else
+                 \MATRIXABSVALUE(#1,#2;#3,#4)(\cctr@tempa,\cctr@tempb;
+                                              \cctr@tempc,\cctr@tempd)
+                 \ifdim \cctr@tempa\p@ > \cctr@epsilon
+                                               % Indeterminate system
+                    \@SOLPART{#5}{#1}{#7}{#8}
+                 \else
+                    \ifdim \cctr@tempb\p@ > \cctr@epsilon
+                                               % Indeterminate system
+                       \@SOLPART{#5}{#2}{#8}{#7}
+                    \else
+                       \ifdim \cctr@tempc\p@ > \cctr@epsilon
+                                               % Indeterminate system
+                          \@SOLPART{#6}{#3}{#7}{#8}
+                       \else
+                          \ifdim \cctr@tempd\p@ > \cctr@epsilon
+                                               % Indeterminate system
+                             \@SOLPART{#6}{#4}{#8}{#7}
+                          \else
+                             \VECTORNORM(#5,#6){\cctr@tempa}
+                             \ifdim \cctr@tempa\p@ > \cctr@epsilon
+                                               % Incompatible system
+                                \@INCSYS#7#8
+                             \else
+                                   \cctr@WarnZeroLinSys
+                                   \COPY{0}{#7}\COPY{0}{#8}
+                                               % 0x=0 Indeterminate system
+        \fi\fi\fi\fi\fi\fi\fi\fi}
+
+\def\@@@SOLVELINEARSYSTEM(#1)(#2)(#3){%
+       \DETERMINANT(#1){\cctr@det}
+       \ABSVALUE{\cctr@det}{\cctr@@det}
+       \ifdim\cctr@@det\p@<\cctr@epsilon
+          \@TDINCSYS(#3)
+          \else
+             \@ADJMATRIX(#1)
+             \MATRIXVECTORPRODUCT(\cctr@solAA,\cctr@solAB,\cctr@solAC;
+                                  \cctr@solBA,\cctr@solBB,\cctr@solBC;
+                                  \cctr@solCA,\cctr@solCB,\cctr@solCC)(#2)(#3)
+             \@SCLRDIVVECT{\cctr@det}(#3)(#3)
+          \fi}
+
+\def\SOLVELINEARSYSTEM(#1)(#2)(#3){%
+        \begingroup
+        \MATRIXSIZE(#1){\cctr@size}
+        \ifnum\cctr@size=2
+           \@@SOLVELINEARSYSTEM(#1)(#2)(#3)
+        \else
+           \@@@SOLVELINEARSYSTEM(#1)(#2)(#3)
+        \fi\@OUTPUTVECTOR(#3)}
+\def\numberPI{3.14159}
+\MULTIPLY{\numberPI}{2}{\numberTWOPI}
+\DIVIDE{\numberPI}{2}{\numberHALFPI}
+\MULTIPLY{\numberPI}{1.5}{\numberTHREEHALFPI}
+\DIVIDE{\numberPI}{3}{\numberTHIRDPI}
+\DIVIDE{\numberPI}{4}{\numberQUARTERPI}
+\DIVIDE{\numberPI}{5}{\numberFIFTHPI}
+\DIVIDE{\numberPI}{6}{\numberSIXTHPI}
+\def\numberE{2.71828}
+\DIVIDE{1}{\numberE}{\numberINVE}
+\SQUARE{\numberE}{\numberETWO}
+\SQUARE{\numberINVE}{\numberINVETWO}
+\def\numberLOGTEN{2.30258}
+\def\numberGOLD{1.61803}
+\def\numberINVGOLD{0.61803}
+\def\numberSQRTTWO{1.41421}
+\def\numberSQRTTHREE{1.73205}
+\def\numberSQRTFIVE{2.23607}
+\def\numberCOSXLV{0.70711}
+\def\numberCOSXXX{0.86603}
+%% 
+%%
+%% End of file `calculator.sty'.

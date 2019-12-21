@@ -1,0 +1,12 @@
+\index{\textbackslash phantomsection}
+\phantomsection\addcontentsline{toc}{chapter}{\string\contentsname}
+\tableofcontents                   %目錄
+\phantomsection\addcontentsline{toc}{chapter}{\string\listfigurename}
+\renewcommand{\numberline}[1]{\figurename~{\rotatebox[origin=cc]{90}{#1}}\hspace*{2em}} 
+\listoffigures                     %圖目錄
+\begingroup
+\let\clearpage\relax
+\phantomsection\addcontentsline{toc}{chapter}{\string\listtablename}
+\renewcommand{\numberline}[1]{\tablename~{\rotatebox[origin=cc]{90}{#1}}\hspace*{2em}} 
+\listoftables                      %表目錄
+\endgroup

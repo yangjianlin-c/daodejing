@@ -1,0 +1,117 @@
+\documentclass[a4paper,zihao=-4,oneside,landscape,UTF8]{ctexart}
+
+%页面旋转
+\usepackage{everypage}
+\AddEverypageHook{\special{pdf: put @thispage <</Rotate 90>>}}
+
+%% font文字旋转
+\defaultCJKfontfeatures{RawFeature={vertical:+vert}}
+
+%% 默认字体为源雲明體
+\setCJKmainfont[BoldFont=源雲明體 TTF SemiBold,ItalicFont=思源宋体 Light]{源雲明體 TTF Medium}
+
+% 页码编号为汉字
+\renewcommand{\thepage}{\Chinese{page}}
+
+\usepackage{geometry}
+\newgeometry{top=50pt, bottom=100pt, left=100pt, right=80pt,headsep=0pt}
+
+\usepackage{titlesec}
+\titleformat{\section}[hang]{\large\bfseries}{}{0pt}{}
+\titlespacing{\section}{4em}{0pt}{0pt}
+
+
+\ctexset{
+	today = big,
+	punct = quanjiao, 
+	autoindent = 0pt,	
+}
+
+%去掉页眉
+\usepackage{fancyhdr}
+\renewcommand{\headrulewidth}{0.0pt}%
+\fancypagestyle{plain}{% Redefine plain pages tyle  
+	% Clear header/footer
+	\fancyhf{}
+	\renewcommand{\headrulewidth}{0.0pt}%
+	\fancyfoot[L]{\thepage}
+}
+\pagestyle{plain}
+
+%%% 命令设置
+\usepackage{xcolor}
+\definecolor{gray}{gray}{0.3}
+\newcommand{\zhushi}[1]{\scriptsize{\textit{\textcolor{gray}{#1}}}\normalsize}
+
+\definecolor{gray1}{gray}{0.2}
+\color{gray1}
+
+
+%\title{\textbf{老子}\textit{ 注 \hspace{5em}河上公}\hfil}
+%\author{Colin Yang \\Email: yangjianlin@gmail.com}
+%\date{\normalsize\today 版}
+
+
+%朱丝栏
+
+%\setlength{\parindent}{4em}
+%\setlength{\parskip}{1em}
+\renewcommand{\baselinestretch}{1.5}
+\usepackage{background}
+\usepackage{array}
+\usepackage{tabularx,colortbl}
+
+\renewcommand{\arraystretch}{37}
+\arrayrulecolor{red}
+\setlength\arrayrulewidth{1pt}
+
+\SetBgScale{1}
+\SetBgAngle{90}
+\SetBgColor{black}
+\SetBgContents{
+
+\begin{tabularx}{0.7\textwidth}{|X|X|X|X|X|X|X|X|X|X|X|X|X|X|}
+	\hline
+	&  &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+\end{tabularx}
+
+}
+\SetBgHshift{0cm}
+
+\begin{document}
+	
+	\ziju{0.1}
+	\large
+	
+%	\maketitle
+
+	\section{體道第一}
+	
+	
+	道可道
+	\zhushi{謂經術政教之道也}
+	非常道
+	\zhushi{非自然生長之道也常道當以無為養神無事安民含光藏暉滅跡匿端不可稱道}
+	名可名
+	\zhushi{謂富貴尊榮高世之名也}
+	非常名
+	\zhushi{非自然常在之名也常名當如嬰兒之未言雞子之未分明珠在蚌中美玉處石間內雖昭昭外如愚頑}
+	無名天地之始
+	\zhushi{無名者謂道道無形故不可名也始者道本也吐氣布化出於虛無為天地本始也}
+	有名萬物之母
+	\zhushi{有名謂天地天地有形位有陰陽有柔剛是其有名也萬物母者天地含氣生萬物長大成熟如母之養子也}
+	故常無欲以觀其妙
+	\zhushi{妙要也人常能無欲則可以觀道之要要謂一也一出布名道贊敘明是非}
+	常有欲以觀其僥
+	\zhushi{僥歸也常有欲之人可以觀世俗之所歸趣也}
+	此兩者同出而異名
+	\zhushi{兩者謂有欲無欲也同出者同出人心也而異名者所名各異也名無欲者長存名有欲者亡身也}
+	同謂之玄
+	\zhushi{玄天也言有欲之人與無欲之人同受氣於天}
+	玄之又玄
+	\zhushi{天中復有天也稟氣有厚薄得中和滋液則生賢聖得錯亂汙辱則生貪淫也}
+	眾妙之門
+	\zhushi{能知天中復有天稟氣有厚薄除情去欲守中和是謂知道要之門戶也}
+	
+	
+\end{document}

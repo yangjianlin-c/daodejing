@@ -1,0 +1,43 @@
+\CJKhorz  % Must for this chapter to read horizontally
+\chapter{檔案結構}
+\section{主結構}
+\fvset{frame=single,numbers=left,numbersep=3pt,firstline=1,lastline=1}
+\VerbatimInput{test.tex}  \index{檔案結構}
+宣告區  \index{宣告區}
+\fvset{frame=single,numbers=left,numbersep=3pt,firstline=6,lastline=6}
+\VerbatimInput{test.tex}
+本文區   \index{本文區}
+\fvset{frame=single,numbers=left,numbersep=3pt,firstline=24,lastline=24}
+\VerbatimInput{test.tex}   
+\index{\LaTeX!\textbackslash VerbatimInput}
+使用時先將此主檔 {\tt test.tex} 另存新檔，給一個自己喜歡的檔名。新檔內容幾乎一模一樣不需改變甚麼(所以簡單吧)。但是至少所作者不同，須修正，現將分別陳述於後： \index{\LaTeX!\textbackslash input}
+\index{Packages!verbatim}
+
+\section{宣告區}
+
+\fvset{frame=lines,numbers=left,numbersep=3pt,firstline=2,lastline=5}
+\VerbatimInput{test.tex} 
+宣告區內第2行是本檔使用的外來巨集。第3-4行是完稿時除去西方格式頁碼及製作索引。另外，此格式檔{\tt CNwritingCJK.cls}內已載入{\tt graphicx, CJKutf8, CJKnumb, CJKvert, showframe, printlen, calculator, tikz}，應避免重複載入。
+\subsection{本文區}
+
+\fvset{frame=lines,numbers=left,numbersep=3pt,firstline=7,lastline=23}
+\VerbatimInput{test.tex}
+第7-8行為書名與作者。第10行可設定字型大小及間距，{\tt CJK}環境開始於第11行，於第23行結束。第12行在完稿前可加入，確定完稿後，將{\tt CJKhorz}刪除再編譯，才能產生直書結果。{\color{red}完稿最後要以{\tt PDF Reader}旋轉九十度}。
+
+14-16行分別是序文、摘要、 謝誌、目錄、圖目、表目等固定格式請不要更動。因論文需要而設計的特定環境(不需要則不必寫)，其使用方式如下：\index{\LaTeX 環境!tabbing}
+\begin{tabbing}
+\hspace{1cm} \=  自序 \hspace{1cm} \=   寫入{\tt \textbackslash begin/\textbackslash end\{preface\}}內。\\[5pt]
+                        \>  謝誌                          \>  寫入{\tt \textbackslash begin/\textbackslash end\{acknowledge\}}內。\\[5pt]
+                        \>  論文主體                  \>  寫入{\tt \textbackslash chapter\{~\}/section\{~\}/subsction\{~\}}內。
+\end{tabbing}
+其他各章節(19-21行)的製作則如同打字一般打入各檔案內，例如{\tt chapter1.tex}，{\tt chapter2.tex}，\linebreak {\tt chapter3.tex}
+即可。第22行則為索引，參考文獻。參考文獻則是用\verb+\bibitem+方式。\index{cnwritingCJK 環境!abstractcn} \index{cnwritingCJK 環境!abstracten} \index{cnwritingCJK 環境!acknowledge} 
+
+\subsection{插頁}  \index{插頁}
+然如何加入特定表格？建議用插頁方式如下。先完成{\tt DOC}相關表格，排好順序，再存成\linebreak {\tt myfile.pdf}檔。所以若有非\LaTeX{}的{\tt pdf}檔皆可以類推，加入本書或論文內。
+\begin{verbatim}
+1. \usepackage{pdfpages}       % 於宣告區
+2. \includepdf[pages=-,        % - =所有頁面 或用 1,2 表示
+   addtotoc={1,subsection,2,{書簽名},標名}]{myfile.pdf}
+第1行寫於宣告區。插頁若需出現在目錄則加addtotoc{}指令。第2行於插頁需要之處寫入。
+\end{verbatim}

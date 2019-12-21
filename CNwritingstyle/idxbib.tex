@@ -1,0 +1,23 @@
+\CJKvert    \index{CJKvert} \index{字型大小} 
+\index{作者}\index{間距} 
+% 保證奇數頁為章節起始              % 將索引加入目錄中
+\begingroup                        % local property
+\def\hyperpage#1{\rotatebox[origin=cc]{90}{#1}}
+\phantomsection\addcontentsline{toc}{chapter}{\string\indexname} 
+\printindex
+\endgroup
+
+\phantomsection\addcontentsline{toc}{chapter}{\string\bibname}
+\bibliographystyle{unsrt}    
+\begin{thebibliography}{20}        
+\bibitem{test}
+網路資訊 http://web.address.com
+\bibitem{test2}
+中文圖書
+\bibitem{novices} \LaTeX{}入門
+\url{http://theoval.cmp.uea.ac.uk/~nlct/latex/novices/novices_scr.pdf}
+\bibitem{doing} Learning \LaTeX{} by Doing
+\url{http://staff.science.uva.nl/~heck/Courses/latexcourse.pdf}
+\bibitem{interm}
+\LaTeX{} \& U 自助出版。北科大文具部，中央敦煌
+\end{thebibliography}
